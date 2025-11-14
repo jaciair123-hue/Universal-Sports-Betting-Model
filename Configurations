@@ -13,8 +13,10 @@ sports:
   - esports_valorant
 
 apis:
-  theoddsapi: "YOUR_KEY"
-  sportradar: "YOUR_KEY"
+ curl --request GET 
+	--url 'https://sportsbook-api2.p.rapidapi.com/v0/advantages/?type=ARBITRAGE' 
+	--header 'x-rapidapi-host: sportsbook-api2.p.rapidapi.com' 
+	--header 'x-rapidapi-key: 9c6cbc5a92msh2cc65dfbd247483p124edajsnfa9be3056fcb'
   hltv: "https://api.hltv.org"
   liquipedia: "https://liquipedia.net"
 
