@@ -1,4 +1,4 @@
-cat > README.md << 'EOL'
+
 # All-Sports + Esports Betting Engine
 
 **One model. All sports. Real edge.**
@@ -12,6 +12,4 @@ cat > README.md << 'EOL'
 - FastAPI live predictions
 
 ## Run
-```bash
-pip install -r requirements.txt
-python run.py
+
