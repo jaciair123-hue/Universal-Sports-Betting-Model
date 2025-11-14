@@ -11,5 +11,4 @@
 - Backtesting
 - FastAPI live predictions
 
-## Run
 
