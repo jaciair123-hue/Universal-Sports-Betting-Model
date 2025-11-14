@@ -1,116 +1,18 @@
-cat > create_repo.sh << 'EOF'
-#!/bin/bash
-mkdir -p config data/raw data/processed features/sports models/submodels pipeline backtest live utils
-
-# config/settings.yaml
-cat > config/settings.yaml << 'EOL'
-sports:
-  - nba
-  - nfl
-  - soccer
-  - mlb
-  - nhl
-  - tennis
-  - golf
-  - esports_lol
-  - esports_cs2
-  - esports_dota2
-  - esports_valorant
-
-apis:
-curl --request GET 
-	--url 'https://sportsbook-api2.p.rapidapi.com/v0/advantages/?type=ARBITRAGE' 
-	--header 'x-rapidapi-host: sportsbook-api2.p.rapidapi.com' 
-	--header 'x-rapidapi-key: 9c6cbc5a92msh2cc65dfbd247483p124edajsnfa9be3056fcb'
-  hltv: "https://api.hltv.org"
-  liquipedia: "https://liquipedia.net"
-
-bankroll:
-  initial: 100000
-  kelly_fraction: 0.5
-  max_bet_pct: 0.03
-EOL
-
-# requirements.txt
-cat > requirements.txt << 'EOL'
+nano requirements.txt
 pandas==2.2.0
 numpy==1.26.0
 scikit-learn==1.5.0
 lightgbm==4.3.0
+xgboost==2.0.3
 catboost==1.2.5
 torch==2.3.0
 feast[aws]==0.37.0
 deltalake==0.16.0
+sqlalchemy==2.0.30
 fastapi==0.111.0
 uvicorn==0.29.0
 requests==2.31.0
 python-dotenv==1.0.1
 basketball-reference-web-scraper
 nba_api
-EOL
-
-# utils/kelly.py
-cat > utils/kelly.py << 'EOL'
-def kelly_stake(bankroll, prob, odds, fraction=0.5):
-    b = odds - 1
-    q = 1 - prob
-    if b <= 0 or prob <= 0.01: return 0
-    kelly = max(0, (b * prob - q) / b)
-    return min(bankroll * kelly * fraction, bankroll * 0.03)
-EOL
-
-# models/ensemble.py
-cat > models/ensemble.py << 'EOL'
-from sklearn.linear_model import LogisticRegression
-import numpy as np
-
-class AllSportsEnsemble:
-    def __init__(self):
-        self.meta = LogisticRegression(penalty='l1', solver='saga')
-        self.models = {}
-
-    def predict(self, match_id, sport, features):
-        sub_probs = [0.5]  # placeholder
-        X = np.array(sub_probs + list(features)).reshape(1, -1)
-        return 0.5  # placeholder
-EOL
-
-# live/api.py
-cat > live/api.py << 'EOL'
-from fastapi import FastAPI
-from pydantic import BaseModel
-
-app = FastAPI()
-
-class BetRequest(BaseModel):
-    match_id: str
-    sport: str
-    odds: float
-
-@app.post("/predict")
-def predict(req: BetRequest):
-    return {"model_prob": 0.55, "edge": 0.03, "stake": 250}
-EOL
-
-# run.py
-cat > run.py << 'EOL'
-print("All Sports Betting Engine Ready!")
-EOL
-
-# .gitignore
-cat > .gitignore << 'EOL'
-__pycache__/
-*.pyc
-.env
-data/raw/
-data/processed/
-models/*.lgb
-models/*.cbm
-.DS_Store
-EOL
-
-chmod +x create_repo.sh
-EOF
-
-# Run it
-bash create_repo.sh
+soccerapi
